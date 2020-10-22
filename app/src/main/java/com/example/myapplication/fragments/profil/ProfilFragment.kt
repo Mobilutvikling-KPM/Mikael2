@@ -27,6 +27,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
@@ -37,11 +38,13 @@ import kotlinx.android.synthetic.main.fragment_profil.view.*
 /**
  * Profil fragment som rendrer innlogget brukers profilside
  */
+
 class ProfilFragment : Fragment() {
 
+    private var loginViewModel: LoginViewModel = LoginViewModel()
     private lateinit var personViewModel: PersonViewModel
     val viewModelLogin = LoginViewModel()
-    val loginViewModel = LoginViewModel()
+
     var navController: NavController? = null
     val bruker = viewModelLogin.getBruker()
     var filePath: Uri? = null
@@ -59,7 +62,7 @@ class ProfilFragment : Fragment() {
         user = FirebaseAuth.getInstance().currentUser
         uuid = user?.uid
         storage = FirebaseStorage.getInstance()
-        storageReference = storage!!.reference.child("images").child(uuid!!)
+        //storageReference = storage!!.reference.child("images").child(uuid!!)
 
     }
 
@@ -72,10 +75,11 @@ class ProfilFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profil, container, false)
 
 
+
         val imageView = view.bilde_profil_item
 
         Picasso.get()
-            .load("https://firebasestorage.googleapis.com/v0/b/eventer-e4813.appspot.com/o/images%2FYAOJfnr3MRR2EKucbGt5kIWZodf1?alt=media&token=ae090750-410c-4542-bd61-b30623eb0caa")
+            .load("https://i.pinimg.com/236x/19/80/34/198034b0276ec4242dc003c13d328e9e--big-eyes-lemurs.jpg")
             .into(imageView)
 
 
@@ -86,10 +90,10 @@ class ProfilFragment : Fragment() {
         view.strek2.visibility = View.GONE
         view.bio.visibility = View.GONE
         view.bli_venn.visibility = View.GONE
-        //view.redigerKnapp.visibility = View.GONE
-        //view.slettKnapp.visibility = View.GONE
+        view.redigerKnapp.visibility = View.GONE
+        view.slettKnapp.visibility = View.GONE
 
-        val viewModelFactory = ViewModelFactory(1,"")
+        val viewModelFactory = ViewModelFactory(1, "")
         personViewModel = ViewModelProvider(this, viewModelFactory).get(PersonViewModel::class.java)
 
         //når data er funnet for innlogget bruker
@@ -98,7 +102,6 @@ class ProfilFragment : Fragment() {
             view.palder.text = "Alder: " + it.alder
             view.pBosted.text = "Bosted: " + it.bosted
             view.biotext.text = it.bio
-
             //Forteller hva glide skal gjøre dersom det ikke er ett bilde eller det er error
 
 
@@ -113,10 +116,12 @@ class ProfilFragment : Fragment() {
             view.profil_progress.visibility = View.GONE
         })
 
-        if ( bruker != null) {
+
+        if (bruker != null) {
             personViewModel.søkEtterPerson(bruker!!.uid)
-            Log.i("lala", "FRA PROFIL TEST " + bruker.uid)
         }
+
+
         view.redigerKnapp.setOnClickListener() {
             var person: Person? = personViewModel.getEnkeltPerson().value
             val bundle = bundleOf("Person" to person)
@@ -129,6 +134,7 @@ class ProfilFragment : Fragment() {
 
         return view
     }
+
 
     private fun showDeleteDialog() {
         AlertDialog.Builder(context)
@@ -150,12 +156,16 @@ class ProfilFragment : Fragment() {
         navController = Navigation.findNavController(view) //referanse til navGraph
 
         observeAuthenticationState()
-        LOLKNAPP.setOnClickListener { launchSignInFlow() }
-        LOLKNAPP2.setOnClickListener{
-            //getUserProfile()
+
+        LoggUtKnapp.setOnClickListener {
+            if (user != null) {
+                LoggUtKnapp.text = "Logg ut"
+                FirebaseAuth.getInstance().signOut()
+
+            } else {
+                launchSignInFlow()
+            }
         }
-
-
     }
 
     private fun launchSignInFlow() {
@@ -198,7 +208,7 @@ class ProfilFragment : Fragment() {
                 Log.i(TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
             }
         }
-        if (requestCode == IMAGE_SIGN_IN_CODE) {
+        if (requestCode == IMAGE_USER_CODE) {
 
         }
     }
@@ -213,6 +223,7 @@ class ProfilFragment : Fragment() {
                 // you can customize the welcome message they see by
                 // utilizing the getFactWithPersonalization() function provided
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+
 
                 }
 
@@ -254,6 +265,6 @@ class ProfilFragment : Fragment() {
 
     companion object {
         val SIGN_IN_REQUEST_CODE = 123
-        val IMAGE_SIGN_IN_CODE = 438
+        val IMAGE_USER_CODE = 438
     }
 }

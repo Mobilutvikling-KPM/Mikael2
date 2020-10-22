@@ -13,9 +13,7 @@
                 android:id="@+id/bilde_frame"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                app:cardCornerRadius="40dp"
-                app:cardElevation="10dp"
-              >
+                app:cardCornerRadius="40dp" >
 
 
                 <ImageView
@@ -100,42 +98,44 @@
             android:layout_marginTop="10dp"
             android:layout_below="@+id/bio"
              />
+        <View
+            android:id="@+id/strek3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="@dimen/page_margin"
+            android:layout_below="@+id/biotext"
+            android:background="@android:color/darker_gray"/>
+        <RelativeLayout
+            android:id="@+id/buttonLayout"
+            android:layout_below="@id/strek3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
         <Button
             android:id="@+id/redigerKnapp"
             android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/biotext"
             android:layout_centerHorizontal="true"
             android:text="@string/rediger_informasjon" />
         <Button
-            android:layout_marginTop="20dp"
-            android:id="@+id/slettKnapp"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/LoggUtKnapp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/redigerKnapp"
             android:layout_centerHorizontal="true"
-            android:text="@string/slett_bruker"
-            android:background="@color/red"/>
-
+            android:text="Logg ut"/>
         <Button
-            android:layout_marginTop="15dp"
-            android:id="@+id/LOLKNAPP"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/slettKnapp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/slettKnapp"
+            android:layout_below="@+id/LoggUtKnapp"
             android:layout_centerHorizontal="true"
             android:text="@string/slett_bruker"
-            android:background="@color/red"/>
-        <Button
-            android:layout_marginTop="15dp"
-            android:id="@+id/LOLKNAPP2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/LOLKNAPP"
-            android:layout_centerHorizontal="true"
-            android:text="TESTUSER"
-            android:background="@color/red"/>
+            app:backgroundTint="@color/red"/>
+        </RelativeLayout>
 
     </RelativeLayout>
 
