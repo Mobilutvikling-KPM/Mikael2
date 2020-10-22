@@ -93,7 +93,7 @@ class BesoekProfilFragment : Fragment() {
 
         view.redigerKnapp.visibility = View.GONE
         view.slettKnapp.visibility = View.GONE
-        view.LOLKNAPP.visibility = View.GONE
+        view.LoggUtKnapp.visibility = View.GONE
         // Inflate the layout for this fragment
         return view
     }
